@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="es">
+<head>
+<script>document.documentElement.classList.add("js");</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bélgica sin prisas</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Guía para el móvil del viaje a Bélgica: un día cada vez, con rutas, horarios, precios y un bingo.">
+<style>
+/* Hallmark · checked: 2026-11-25 · genre: editorial · shape: app screen
+ * restyled by request from Carnival to a custom look: a Christmas card (cream paper, serif heads, fir green, wine red, thin gold rules)
+ * built: Hallmark · theme: custom (postal de Navidad) · redesign: restyle · contrast: pass · v2.0.0 */
+/* Hallmark · answered F1 · the straight apostrophes are inside French street names and phrases copied as the signs and menus print them */
+/* Hallmark · dismissed 49 · the bingo squares are checklist rows read whole; they wrap on purpose so the type stays large for the travellers */
+/* Hallmark · dismissed F4 · the green tint on a bingo square is its ticked state, not a second primary button; the route buttons are the only filled control */
+/* Hallmark · dismissed 69 · one day shows at a time, so a train time repeats only where it is used: in that day's timetable and in the train table */
+
+:root {
+  color-scheme: light;
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px;
+  --text-sm: 1rem; --text-md: 1.125rem; --text-lg: 1.25rem; --text-xl: 1.45rem; --text-2xl: 1.8rem; --text-3xl: 2.3rem; --text-poster: 3rem;
+  --dur-micro: 120ms;
+  --color-paper: oklch(96.5% 0.014 85); --color-paper-2: oklch(93.5% 0.02 85); --color-paper-3: oklch(88% 0.025 85);
+  --color-card: oklch(99% 0.006 85);
+  --color-ink: oklch(24% 0.03 160); --color-ink-2: oklch(36% 0.025 160); --color-muted: oklch(45% 0.02 160);
+  --color-fir: oklch(38% 0.07 160); --color-fir-hover: oklch(32% 0.065 160); --color-fir-tint: oklch(93% 0.03 160);
+  --color-wine: oklch(40% 0.13 20); --color-wine-hover: oklch(34% 0.12 20);
+  --color-gold: oklch(72% 0.11 80);
+  --color-on-dark: oklch(97% 0.014 85); --color-on-dark-2: oklch(88% 0.025 85);
+  --color-focus: oklch(40% 0.13 20);
+  --font-display: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-figures: "Palatino Linotype", "Book Antiqua", Palatino, "Noto Serif", serif;
+  --radius: 12px; --radius-s: 8px; --radius-pill: 999px; --rule-hair: 1px;
+  --shadow-card: 0 1px 2px oklch(24% 0.03 160 / 0.08), 0 6px 18px oklch(24% 0.03 160 / 0.07);
+  --measure: 720px; --gutter: 16px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-paper-3) var(--color-paper); }
+body {
+  margin: 0; background: var(--color-paper); color: var(--color-ink);
+  font-family: var(--font-body); font-size: var(--text-md); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--color-fir-tint); color: var(--color-ink); }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+a { color: inherit; text-underline-offset: 0.18em; }
+p { margin: 0; text-wrap: pretty; }
+h1, h2, h3 {
+  margin: 0; font-family: var(--font-display); font-weight: 400; line-height: 1.15;
+  overflow-wrap: break-word; min-width: 0; text-wrap: balance;
+}
+table, .horario, .dia-num, #bingo-hechas { font-variant-numeric: lining-nums tabular-nums; }
+.dia-num, .horario b, #bingo-hechas { font-family: var(--font-figures); }
+
+/* Cabecera: el título de la postal */
+header { padding: var(--space-xl) var(--gutter) var(--space-lg); text-align: center; }
+header h1, header p { max-width: var(--measure); margin-inline: auto; }
+header h1 { font-size: var(--text-poster); color: var(--color-fir); }
+header p { margin-top: var(--space-xs); color: var(--color-ink-2); font-family: var(--font-display); font-style: italic; font-size: var(--text-lg); }
+header::after {
+  content: ""; display: block; max-width: 220px; height: 1px; margin: var(--space-lg) auto 0;
+  background: var(--color-gold);
+}
+body:not(:has(#inicio.activa)) header { padding-block: var(--space-md) var(--space-sm); }
+body:not(:has(#inicio.activa)) header h1 { font-size: var(--text-xl); }
+body:not(:has(#inicio.activa)) header p { display: none; }
+body:not(:has(#inicio.activa)) header::after { margin-top: var(--space-sm); }
+
+main { max-width: calc(var(--measure) + 2 * var(--gutter)); margin: 0 auto; padding: 0 var(--gutter) var(--space-2xl); }
+footer { color: var(--color-muted); font-size: var(--text-sm); text-align: center; padding: 0 var(--gutter) var(--space-xl); }
+footer a { display: inline-block; margin-top: var(--space-xs); padding-block: var(--space-xs); color: var(--color-ink-2); text-decoration-color: var(--color-gold); transition: color var(--dur-micro) ease-out; }
+footer a:hover { color: var(--color-wine); }
+
+/* Un día cada vez */
+.js .vista { display: none; }
+.js .vista.activa { display: block; }
+.aviso-sin-js { margin-top: var(--space-sm); color: var(--color-muted); font-size: var(--text-sm); }
+.js .aviso-sin-js { display: none; }
+html:not(.js) .vista { padding-top: var(--space-xl); }
+section { padding-top: var(--space-xs); }
+h2 { font-size: var(--text-3xl); color: var(--color-fir); margin-top: var(--space-xs); }
+.sub { color: var(--color-ink-2); margin: var(--space-xs) 0 var(--space-lg); }
+#inicio .sub { text-align: center; }
+h3 {
+  font-size: var(--text-xl); color: var(--color-wine);
+  margin: var(--space-xl) 0 var(--space-md); padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-gold);
+}
+
+/* Pantalla principal: los días */
+.dias { display: grid; gap: var(--space-2xs); }
+.dias .dia {
+  display: grid; grid-template-columns: 3.4rem minmax(0, 1fr) auto; gap: var(--space-sm); align-items: center;
+  padding: var(--space-md); color: var(--color-ink); text-decoration: none;
+  border-bottom: var(--rule-hair) solid var(--color-paper-3); border-radius: var(--radius);
+  transition: background-color var(--dur-micro) ease-out;
+}
+.dias .dia:hover { background: var(--color-paper-2); }
+.dias .dia:active { background: var(--color-paper-3); }
+.dia-num { font-family: var(--font-display); font-size: var(--text-poster); line-height: 1; color: var(--color-fir); text-align: center; font-variant-numeric: lining-nums tabular-nums; }
+.dia-texto b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--text-xl); line-height: 1.2; }
+.dia-texto span { color: var(--color-ink-2); }
+.dia-tiempo { display: grid; justify-items: end; text-align: right; line-height: 1.2; min-width: 4.2rem; }
+.dia-tiempo .t-max { font-family: var(--font-figures); font-size: var(--text-xl); color: var(--color-ink); font-variant-numeric: lining-nums tabular-nums; }
+.dia-tiempo .t-min { font-family: var(--font-figures); font-size: var(--text-md); color: var(--color-muted); font-variant-numeric: lining-nums tabular-nums; }
+.dia-tiempo .t-cielo { margin-top: var(--space-2xs); font-size: 0.875rem; color: var(--color-ink-2); max-width: 5.5rem; }
+.dias .dia.hoy .dia-tiempo span { color: var(--color-on-dark); }
+.dias .dia.hoy .dia-tiempo .t-min, .dias .dia.hoy .dia-tiempo .t-cielo { color: var(--color-on-dark-2); }
+.dias .dia.hoy { background: var(--color-fir); color: var(--color-on-dark); border-bottom-color: transparent; box-shadow: var(--shadow-card); }
+.dias .dia.hoy:hover { background: var(--color-fir-hover); }
+.dias .dia.hoy .dia-num { color: var(--color-on-dark); }
+.dias .dia.hoy .dia-texto span { color: var(--color-on-dark-2); }
+.dias .dia.hoy .dia-texto span.etiqueta {
+  display: inline-block; margin-bottom: var(--space-2xs); padding: var(--space-3xs) var(--space-sm);
+  background: var(--color-gold); color: var(--color-ink); font-weight: 600; font-size: var(--text-sm);
+  border-radius: var(--radius-pill);
+}
+
+/* Bingo, hotel y práctico */
+.dia.juego, .extras .dia {
+  display: block; text-decoration: none; border-radius: var(--radius); box-shadow: var(--shadow-card);
+  transition: background-color var(--dur-micro) ease-out, transform var(--dur-micro) ease-out;
+}
+.dia.juego:active, .extras .dia:active { transform: translateY(1px); }
+.dia.juego { margin-top: var(--space-xl); padding: var(--space-lg); background: var(--color-wine); color: var(--color-on-dark); text-align: center; }
+.dia.juego:hover { background: var(--color-wine-hover); }
+.dia.juego b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--text-2xl); line-height: 1.1; }
+.dia.juego span { color: var(--color-on-dark-2); }
+.extras { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-md); margin-top: var(--space-md); }
+.extras .dia {
+  padding: var(--space-md); text-align: center; background: var(--color-card); color: var(--color-fir);
+  border: var(--rule-hair) solid var(--color-paper-3); font-family: var(--font-display); font-size: var(--text-xl);
+}
+.extras .dia b { font-weight: 400; }
+.extras .dia:hover { background: var(--color-paper-2); }
+
+/* Volver, día siguiente y empezar de nuevo */
+.volver, .reiniciar {
+  display: inline-block; text-decoration: none; cursor: pointer;
+  color: var(--color-fir); background: var(--color-card); border: var(--rule-hair) solid var(--color-paper-3);
+  border-radius: var(--radius-pill); box-shadow: var(--shadow-card);
+  font-family: var(--font-body); font-weight: 600; font-size: var(--text-md); line-height: 1.2;
+  padding: var(--space-sm) var(--space-lg);
+  transition: background-color var(--dur-micro) ease-out, transform var(--dur-micro) ease-out;
+}
+.volver { margin: var(--space-md) 0 var(--space-sm); }
+.reiniciar { display: block; margin: var(--space-xl) 0 var(--space-md); }
+.reiniciar:disabled { cursor: not-allowed; color: var(--color-muted); box-shadow: none; }
+.siguiente {
+  display: block; margin-top: var(--space-2xl); padding: var(--space-md) var(--space-lg); text-decoration: none;
+  background: var(--color-card); color: var(--color-fir); border: var(--rule-hair) solid var(--color-paper-3);
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.2;
+  transition: background-color var(--dur-micro) ease-out, transform var(--dur-micro) ease-out;
+}
+.siguiente small { display: block; margin-bottom: var(--space-2xs); font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-muted); }
+.volver:hover, .siguiente:hover, .reiniciar:hover { background: var(--color-paper-2); }
+.volver:active, .siguiente:active, .reiniciar:active { transform: translateY(1px); }
+
+/* Horario del día */
+.horario { list-style: none; padding: 0; margin: 0 0 var(--space-md); }
+.horario li {
+  display: grid; grid-template-columns: 5rem minmax(0, 1fr); gap: var(--space-sm);
+  padding: var(--space-sm) 0; border-bottom: var(--rule-hair) solid var(--color-paper-3);
+}
+.horario b { font-family: var(--font-display); font-weight: 400; font-size: var(--text-lg); line-height: 1.4; color: var(--color-fir); }
+
+/* Botones de ruta */
+.ruta {
+  display: block; margin: var(--space-md) 0 var(--space-lg); padding: var(--space-md) var(--space-lg);
+  background: var(--color-fir); color: var(--color-on-dark); text-decoration: none;
+  border-radius: var(--radius); box-shadow: var(--shadow-card);
+  font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.2;
+  transition: background-color var(--dur-micro) ease-out, transform var(--dur-micro) ease-out;
+}
+.ruta small { display: block; margin-top: var(--space-2xs); font-family: var(--font-body); font-size: var(--text-sm); line-height: 1.4; color: var(--color-on-dark-2); }
+.ruta:hover { background: var(--color-fir-hover); }
+.ruta:active { transform: translateY(1px); }
+.tramo { color: var(--color-muted); margin: 0 0 var(--space-lg); }
+
+/* Paradas */
+ol.paradas { list-style: none; counter-reset: parada; padding: 0; margin: 0; }
+ol.paradas > li, .tarjeta {
+  position: relative; background: var(--color-card);
+  border: var(--rule-hair) solid var(--color-paper-3); border-radius: var(--radius); box-shadow: var(--shadow-card);
+  padding: var(--space-md) var(--space-lg); margin-bottom: var(--space-md);
+}
+ol.paradas > li { counter-increment: parada; padding-left: 4.2rem; }
+ol.paradas > li::before {
+  content: counter(parada); position: absolute; left: var(--space-md); top: var(--space-md);
+  width: 2.2rem; height: 2.2rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--color-fir); color: var(--color-on-dark); font-family: var(--font-display); font-size: var(--text-lg); line-height: 1;
+}
+.nombre { display: block; font-family: var(--font-display); font-size: var(--text-xl); line-height: 1.25; color: var(--color-ink); }
+.paradas p, .tarjeta p { margin-top: var(--space-xs); color: var(--color-ink-2); }
+.curiosidad { font-family: var(--font-display); font-style: italic; font-size: var(--text-lg); color: var(--color-ink); }
+.mapa {
+  display: inline-block; margin-top: var(--space-xs); padding-block: var(--space-xs);
+  color: var(--color-fir); font-weight: 600; text-decoration: underline; text-decoration-color: var(--color-gold); text-decoration-thickness: 2px;
+  transition: color var(--dur-micro) ease-out;
+}
+.mapa:hover { color: var(--color-wine); }
+.tel { color: var(--color-fir); font-weight: 600; text-decoration-color: var(--color-gold); text-decoration-thickness: 2px; }
+.hotel .dir { font-family: var(--font-display); font-size: var(--text-2xl); color: var(--color-ink); line-height: 1.3; }
+
+/* Avisos */
+.aviso { background: var(--color-paper-2); border-radius: var(--radius-s); padding: var(--space-sm) var(--space-md); margin: var(--space-md) 0; }
+.fijo {
+  background: var(--color-fir-tint); color: var(--color-ink); border: var(--rule-hair) solid var(--color-fir);
+  border-radius: var(--radius-s); padding: var(--space-sm) var(--space-md); margin: var(--space-md) 0;
+}
+ul.lista { padding-left: 1.2em; margin: var(--space-xs) 0; }
+ul.lista li { margin-bottom: var(--space-xs); }
+ul.lista li::marker { color: var(--color-gold); }
+
+/* La foto del día */
+.foto {
+  margin-top: var(--space-xl); padding: var(--space-lg); text-align: center;
+  background: var(--color-wine); color: var(--color-on-dark); border-radius: var(--radius); box-shadow: var(--shadow-card);
+}
+.foto b { display: block; margin-bottom: var(--space-xs); font-family: var(--font-display); font-weight: 400; font-size: var(--text-2xl); line-height: 1.1; }
+
+/* Tablas */
+table { border-collapse: collapse; width: 100%; font-size: var(--text-sm); margin-top: var(--space-xs); }
+td { padding: var(--space-sm) var(--space-xs); border-bottom: var(--rule-hair) solid var(--color-paper-3); vertical-align: top; }
+td:first-child { color: var(--color-ink-2); width: 42%; }
+tr.grupo th {
+  text-align: left; padding: var(--space-lg) var(--space-xs) var(--space-xs);
+  font-family: var(--font-display); font-weight: 400; font-size: var(--text-lg); color: var(--color-wine);
+  border-bottom: var(--rule-hair) solid var(--color-gold);
+}
+
+/* Bingo */
+.bingo-cuenta { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-ink-2); margin: 0 0 var(--space-md); }
+#bingo-hechas { font-size: var(--text-poster); color: var(--color-fir); }
+.bingo { list-style: none; padding: 0; margin: 0; }
+.bingo li { border-bottom: var(--rule-hair) solid var(--color-paper-3); }
+.bingo button {
+  position: relative; width: 100%; min-height: 56px; display: flex; gap: var(--space-md); align-items: center;
+  padding: var(--space-sm) var(--space-xs); text-align: left; cursor: pointer; border-radius: var(--radius-s);
+  font: inherit; color: var(--color-ink); background: transparent; border: 0;
+  transition: background-color var(--dur-micro) ease-out;
+}
+.bingo button::before {
+  content: ""; flex: none; width: 30px; height: 30px; background: var(--color-card);
+  border: 2px solid var(--color-ink-2); border-radius: var(--radius-s);
+}
+.bingo button:hover { background: var(--color-paper-2); }
+.bingo button:active { background: var(--color-paper-3); }
+.bingo button:disabled { cursor: not-allowed; color: var(--color-muted); background: var(--color-paper-2); }
+.bingo button[aria-pressed="true"] { background: var(--color-fir-tint); }
+.bingo button[aria-pressed="true"]::before { background: var(--color-fir); border-color: var(--color-fir); }
+.bingo button[aria-pressed="true"]::after {
+  content: ""; position: absolute; left: calc(var(--space-xs) + 10px); top: 50%;
+  width: 9px; height: 16px; margin-top: calc(-1 * var(--space-sm));
+  border: solid var(--color-on-dark); border-width: 0 3px 3px 0; transform: rotate(45deg);
+}
+.bingo-premio {
+  display: none; margin: var(--space-lg) 0; padding: var(--space-lg); text-align: center;
+  background: var(--color-fir); color: var(--color-on-dark); border-radius: var(--radius); box-shadow: var(--shadow-card);
+  font-family: var(--font-display); font-size: var(--text-2xl); line-height: 1.2;
+}
+.bingo-premio.visible { display: block; }
+
+/* Aviso legal */
+ol.legal { padding-left: 1.6em; margin: 0; }
+ol.legal li { margin-bottom: var(--space-md); padding-left: var(--space-2xs); }
+ol.legal li::marker { font-family: var(--font-display); color: var(--color-wine); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Bélgica sin prisas</h1>
+  <p>Del viernes 27/11 al martes 1/12/2026</p>
+</header>
+
+<main>
+
+  <!-- ============ PANTALLA PRINCIPAL ============ -->
+  <section id="inicio" class="vista">
+    <p class="sub">Tocad el día para ver qué se hace. A la derecha, la máxima, la mínima y el cielo (previsión del 25/11).</p>
+    <div class="dias" role="navigation" aria-label="Días del viaje">
+      <a class="dia" href="#d27" data-dia="2026-11-27"><span class="dia-num">27</span><span class="dia-texto"><b>Viernes</b><span>Llegada, Grand Place e inauguración del mercadillo</span></span><span class="dia-tiempo"><span class="t-max">1°</span><span class="t-min">-4°</span><span class="t-cielo">Sol</span></span></a>
+      <a class="dia" href="#d28" data-dia="2026-11-28"><span class="dia-num">28</span><span class="dia-texto"><b>Sábado</b><span>Brujas: free tour, museo de la cerveza y canales</span></span><span class="dia-tiempo"><span class="t-max">3°</span><span class="t-min">-4°</span><span class="t-cielo">Sol y nubes</span></span></a>
+      <a class="dia" href="#d29" data-dia="2026-11-29"><span class="dia-num">29</span><span class="dia-texto"><b>Domingo</b><span>Excursión: Atomium y Gante</span></span><span class="dia-tiempo"><span class="t-max">5°</span><span class="t-min">0°</span><span class="t-cielo">Lluvia, 55 %</span></span></a>
+      <a class="dia" href="#d30" data-dia="2026-11-30"><span class="dia-num">30</span><span class="dia-texto"><b>Lunes</b><span>Lovaina por la mañana; free tour por Bruselas por la tarde</span></span><span class="dia-tiempo"><span class="t-max">7°</span><span class="t-min">2°</span><span class="t-cielo">Nublado</span></span></a>
+      <a class="dia" href="#d01" data-dia="2026-12-01"><span class="dia-num">1</span><span class="dia-texto"><b>Martes</b><span>Mañana tranquila y vuelta a casa</span></span><span class="dia-tiempo"><span class="t-max">6°</span><span class="t-min">2°</span><span class="t-cielo">Nublado</span></span></a>
+    </div>
+    <a class="dia juego" href="#bingo"><b>Bingo belga</b><span>Cosas que ir cazando durante el viaje</span></a>
+    <div class="extras">
+      <a class="dia" href="#hotel"><b>Hotel</b></a>
+      <a class="dia" href="#practico"><b>Práctico</b></a>
+    </div>
+    <p class="aviso">Los horarios son orientativos: esto es para disfrutar, no para correr. Los botones de mapa necesitan datos móviles; el resto de la página funciona sin internet.</p>
+  </section>
+
+  <!-- ============ BINGO ============ -->
+  <section id="bingo" class="vista">
+    <h2>Bingo belga</h2>
+    <p class="sub">Tocad cada cosa cuando la consigáis. Se queda guardado en el móvil. ¿Quién completa antes el cartón?</p>
+    <p class="aviso-sin-js">Si al tocar no se marca nada, la página está abierta en la vista previa: abridla en Safari o en Chrome para jugar.</p>
+    <p class="bingo-cuenta"><b id="bingo-hechas">0</b> de <span id="bingo-total">16</span></p>
+    <ul class="bingo">
+      <li><button type="button" aria-pressed="false"><span>Ver cómo se enciende el árbol de la Grand Place</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Tomar un vino caliente en el mercadillo</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Ver al Manneken Pis vestido con algún traje</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Encontrar el mural de Tintín (Rue de l'Étuve, cerca del Manneken Pis)</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Comerse un gofre (de Bruselas, de Lieja… o de los dos)</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Patatas fritas en cucurucho con la salsa más rara que encontréis</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Probar tres cervezas y que lleguen en tres vasos distintos</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Decir «merci» en Bruselas y «dank u» en Brujas</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Contar los cisnes del Lago del Amor</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Ver pasar una barca por los canales de Brujas</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Entrar en una de las bolas del Atomium</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Ver el castillo de los Condes en Gante</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Foto imitando a Fonske en Lovaina</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Un café en «la barra más larga del mundo» (Oude Markt)</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Encontrar el escarabajo gigante atravesado por una aguja</span></button></li>
+      <li><button type="button" aria-pressed="false"><span>Volver a casa con más chocolate que ropa</span></button></li>
+    </ul>
+    <button type="button" class="reiniciar" id="bingo-reiniciar">Empezar el cartón de nuevo</button>
+    <p class="bingo-premio" id="bingo-premio">¡Bingo! Bélgica, conquistada.<br>Esto hay que celebrarlo con otro gofre.</p>
+  </section>
+
+  <!-- ============ HOTEL ============ -->
+  <section id="hotel" class="vista">
+    <h2>El hotel</h2>
+    <p class="sub">Todas las noches en el mismo. Si os perdéis, enseñad esta tarjeta.</p>
+    <div class="tarjeta hotel">
+      <span class="nombre">NH Brussels Grand Place Arenberg</span>
+      <p class="dir">Rue d'Assaut 15<br>1000 Bruxelles</p>
+      <p>Teléfono: <a class="tel" href="tel:+3225011616">+32 2 501 16 16</a></p>
+      <a class="mapa" data-q="NH Brussels Grand Place Arenberg" href="https://www.google.com/maps/search/?api=1&amp;query=NH%20Brussels%20Grand%20Place%20Arenberg" target="_blank">Abrir en el mapa</a>
+    </div>
+    <p>Está en pleno centro: la Grand Place, a unos 5 minutos andando, y la estación Bruxelles-Central (para todos los trenes), a otros 5.</p>
+  </section>
+
+  <!-- ============ VIERNES ============ -->
+  <section id="d27" class="vista">
+    <h2>Viernes 27: llegada.</h2>
+    <p class="sub">Media tarde para situarse, todo andando cerca del hotel.</p>
+
+    <ul class="horario">
+      <li><b>13:00</b><span>Llegada a Bruselas. El traslado al hotel está incluido.</span></li>
+      <li><b>~14:00</b><span>Maletas en recepción (la habitación está lista desde las 15:00) y a comer al Wolf.</span></li>
+      <li><b>Tarde</b><span>Galerías y Grand Place de día. Un rato de descanso en el hotel.</span></li>
+      <li><b>16:45</b><span>Anochece: hora del mercadillo y las luces.</span></li>
+      <li><b>18:00</b><span>Inauguración del mercadillo en la Grand Place: espectáculo y encendido del gran árbol. Habrá mucha gente: mejor verlo desde una esquina.</span></li>
+      <li><b>Cena</b><span>Mejor con reserva: es la noche de la inauguración. Ideas en «Práctico».</span></li>
+    </ul>
+
+    <a class="ruta" data-paradas="NH Brussels Grand Place Arenberg|Wolf Sharing Food Market, Rue du Fossé aux Loups 50, Bruxelles|Galeries Royales Saint-Hubert|Grand Place, Bruxelles|Place Sainte-Catherine, Bruxelles" href="https://www.google.com/maps/dir/?api=1&amp;origin=NH%20Brussels%20Grand%20Place%20Arenberg&amp;destination=Place%20Sainte-Catherine%2C%20Bruxelles&amp;travelmode=walking&amp;waypoints=Wolf%20Sharing%20Food%20Market%2C%20Rue%20du%20Foss%C3%A9%20aux%20Loups%2050%2C%20Bruxelles%7CGaleries%20Royales%20Saint-Hubert%7CGrand%20Place%2C%20Bruxelles" target="_blank">Ver la ruta en el mapa<small>Hotel, Wolf, Galerías, Grand Place, Sainte-Catherine</small></a>
+
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Wolf, mercado de comida</span>
+        <p>Un mercado cubierto con puestos de cocinas distintas. Cada uno pide en el puesto que quiera y se come junto en mesas compartidas. Ideal para llegar con hambre y sin ponerse de acuerdo con una carta.</p>
+        <p>Rue du Fossé aux Loups 50, a unos minutos del hotel. Abre de miércoles a domingo desde las 12:00.</p>
+        <a class="mapa" data-q="Wolf Sharing Food Market, Rue du Fossé aux Loups 50, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Wolf%20Sharing%20Food%20Market%2C%20Rue%20du%20Foss%C3%A9%20aux%20Loups%2050%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Galerías Reales Saint-Hubert</span>
+        <p>Inauguradas en 1847, fueron de las primeras galerías comerciales cubiertas de Europa: techo de cristal, chocolaterías, librerías y cafés. Perfectas si llueve.</p>
+        <p class="curiosidad">Se pensaron para que la burguesía pudiera pasear y comprar sin pisar el barro de las calles de entonces.</p>
+        <a class="mapa" data-q="Galeries Royales Saint-Hubert" href="https://www.google.com/maps/search/?api=1&amp;query=Galeries%20Royales%20Saint-Hubert" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Grand Place</span>
+        <p>El corazón de Bruselas y Patrimonio de la Humanidad. A un lado, el Ayuntamiento gótico, del siglo XV, con su torre de casi 100 metros. Enfrente, la Casa del Rey. Alrededor, las casas de los gremios, cada una con su escudo dorado.</p>
+        <p class="curiosidad">En 1695 el ejército de Luis XIV bombardeó la ciudad y la plaza quedó casi destruida. Los gremios la reconstruyeron en pocos años, y cada uno compitió por tener la fachada más espectacular. Por eso es tan recargada.</p>
+        <p>Merece verla dos veces: de día y de noche, con el árbol de Navidad y las luces.</p>
+        <p><b>Para entrar (si hay ganas):</b> la Casa del Rey es hoy el <b>Museo de la Ciudad</b>, donde se guarda el Manneken Pis original. Abre de martes a domingo, de 10:00 a 17:00; unos 10 € (con descuento para mayores). Hoy viernes es el único día que cuadra: el lunes cierra.</p>
+        <a class="mapa" data-q="Grand Place, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Grand%20Place%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Mercadillo de Navidad (Winter Wonders)</span>
+        <p>Se inaugura justo hoy: a las 18:00, espectáculo en la Grand Place y encendido del árbol. Los puestos van desde la Bolsa hasta la plaza Sainte-Catherine: vino caliente, gofres, adornos y luces. Abre de 12:00 a 22:00. Entrar es gratis; la noria y la pista de hielo se pagan aparte.</p>
+        <p class="curiosidad">El gran edificio de columnas de la Bolsa ya no es la Bolsa: dentro hay ahora un museo de la cerveza belga. Y la plaza Sainte-Catherine era un puerto: los muelles se rellenaron en el siglo XIX, y por eso las calles se llaman «quai» y el barrio sigue siendo el del pescado.</p>
+        <a class="mapa" data-q="Place Sainte-Catherine, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Place%20Sainte-Catherine%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Si hay ganas</h3>
+    <ul class="lista">
+      <li>Una cerveza en <b>À la Mort Subite</b>, un café de toda la vida junto a las galerías.</li>
+      <li><b>Belgian Beer World</b>, el museo de la cerveza dentro de la antigua Bolsa, de camino al mercadillo. Unos 21,50 € (mayores, unos 19,50 €), con cerveza en la azotea. Abre hasta las 19:00 más o menos.</li>
+      <li>Vuelta al hotel: desde Sainte-Catherine, unos 10 o 15 minutos andando.</li>
+    </ul>
+    <div class="foto"><b>La foto del día</b>Todos juntos delante del árbol de la Grand Place, recién encendido.</div>
+  </section>
+
+  <!-- ============ SÁBADO ============ -->
+  <section id="d28" class="vista">
+    <h2>Sábado 28: Brujas.</h2>
+    <p class="sub">Free tour por la mañana y la tarde paseando hacia la estación.</p>
+
+    <ul class="horario">
+      <li><b>8:30</b><span>Salir del hotel hacia Bruxelles-Central (5 minutos andando), con margen para sacar la tarjeta Train+ y los billetes.</span></li>
+      <li><b>~9:00</b><span>Tren directo a Brugge: aproximadamente 1 hora.</span></li>
+      <li><b>~10:00</b><span>Llegada a Brujas y 20 minutos andando hasta la plaza Markt.</span></li>
+      <li><b>10:30</b><span>Free tour «La Venecia del Norte», desde la plaza Markt.</span></li>
+      <li><b>~12:30</b><span>Fin del tour en la plaza Burg. A comer.</span></li>
+      <li><b>~14:00</b><span>Museo de la Cerveza, con cata de 3 cervezas.</span></li>
+      <li><b>~15:00</b><span>Paseo hasta la estación: muelle del Rosario, mercadillo de Simon Stevin, la Virgen de Miguel Ángel, el Beaterio y el Lago del Amor.</span></li>
+      <li><b>16:45</b><span>Anochece. Si hay ganas, vuelta al Markt para ver el mercadillo con luces.</span></li>
+      <li><b>Noche</b><span>Tren de vuelta a Bruselas cuando se cansen.</span></li>
+    </ul>
+
+    <div class="aviso"><b>El tren:</b> sale uno cada 30 minutos más o menos; el de las 9:00 llega hacia las 10:00. Antes de comprarlo, cada uno saca su <b>tarjeta Train+</b> en la máquina (ver «Trenes» en Práctico): con ella, los mayores de 65 pagan como mucho 5,50 € por trayecto, unos 11 € ida y vuelta a Brujas.</div>
+
+    <h3>Mañana: de la estación al tour</h3>
+    <a class="ruta" data-paradas="Station Brugge|Markt, Brugge" data-solo="1" href="https://www.google.com/maps/dir/?api=1&amp;origin=Station%20Brugge&amp;destination=Markt%2C%20Brugge&amp;travelmode=walking" target="_blank">Ver el camino en el mapa<small>De la estación de Brujas a la plaza Markt (unos 20 minutos)</small></a>
+    <p class="tramo">Si no apetece andar, hay autobuses de la estación al centro: los que van a «Centrum» paran cerca del Markt. El billete se compra en la máquina de la parada o en la app De Lijn.</p>
+
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Plaza Markt y el Campanario (Belfort)</span>
+        <p>Aquí empieza el tour, y el guía lo explica todo, así que aquí solo lo necesario: el campanario es del siglo XIII y mide 83 metros. Este fin de semana, la plaza está llena con el mercadillo de Navidad.</p>
+        <p>Subir arriba son 366 escalones estrechos: solo si las rodillas están bien. Unos 15 €; los sábados de invierno abre de 9:00 a 20:00. Mejor comprar la entrada por internet (Musea Brugge), con hora. Si hace mucho viento, la cierran.</p>
+        <a class="mapa" data-q="Belfort, Markt, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Belfort%2C%20Markt%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Comer</h3>
+    <div class="tarjeta">
+      <span class="nombre">Donde recomiende el guía</span>
+      <p>Preguntadle al acabar el tour por un sitio de comida flamenca típica. Platos que buscar: <i>stoofvlees</i> (ternera estofada en cerveza, con patatas fritas), mejillones o <i>waterzooi</i> (guiso cremoso de pollo o pescado).</p>
+      <p><b>Plan B:</b> Cambrinus (Philipstockstraat 19), cervecería flamenca a 2 minutos del Markt. Teléfono: <a class="tel" href="tel:+3250332328">+32 50 33 23 28</a>.</p>
+      <a class="mapa" data-q="Cambrinus, Philipstockstraat 19, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Cambrinus%2C%20Philipstockstraat%2019%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+    </div>
+
+    <h3>Tarde: ruta hacia la estación</h3>
+    <a class="ruta" data-paradas="Bruges Beer Museum, Breidelstraat 3, Brugge|Rozenhoedkaai, Brugge|Simon Stevinplein, Brugge|Onze-Lieve-Vrouwekerk, Brugge|Begijnhof, Brugge" href="https://www.google.com/maps/dir/?api=1&amp;origin=Bruges%20Beer%20Museum%2C%20Breidelstraat%203%2C%20Brugge&amp;destination=Begijnhof%2C%20Brugge&amp;travelmode=walking&amp;waypoints=Rozenhoedkaai%2C%20Brugge%7CSimon%20Stevinplein%2C%20Brugge%7COnze-Lieve-Vrouwekerk%2C%20Brugge" target="_blank">Ver el tramo 1 en el mapa<small>Museo de la Cerveza, Rozenhoedkaai, Simon Stevin, Nuestra Señora, Beaterio</small></a>
+    <a class="ruta" data-paradas="Begijnhof, Brugge|Minnewater, Brugge|Station Brugge" href="https://www.google.com/maps/dir/?api=1&amp;origin=Begijnhof%2C%20Brugge&amp;destination=Station%20Brugge&amp;travelmode=walking&amp;waypoints=Minnewater%2C%20Brugge" target="_blank">Ver el tramo 2 en el mapa<small>Beaterio, Lago del Amor, estación</small></a>
+
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Museo de la Cerveza</span>
+        <p>Entre el Markt y el Burg, justo donde acaba el tour. Cuenta la historia de la cerveza belga (monjes, abadías, estilos) y la entrada suele incluir una cata de 3 cervezas pequeñas.</p>
+        <p>Breidelstraat 3. Abre todos los días desde las 10:00; última entrada al museo a las 17:00 y el bar, hasta las 18:30. Unos 15 € con la cata.</p>
+        <p class="curiosidad">En Bélgica hay más de mil cervezas distintas, y casi todas tienen su vaso propio. Por eso cada cerveza os llegará en un vaso diferente.</p>
+        <a class="mapa" data-q="Bruges Beer Museum, Breidelstraat 3, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Bruges%20Beer%20Museum%2C%20Breidelstraat%203%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Muelle del Rosario (Rozenhoedkaai)</span>
+        <p>La foto más famosa de Brujas: el canal, las casas antiguas y el campanario asomando detrás. A 2 minutos del Burg.</p>
+        <p class="curiosidad">Se cuenta que el nombre viene de los vendedores de rosarios que se ponían aquí.</p>
+        <a class="mapa" data-q="Rozenhoedkaai, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Rozenhoedkaai%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Plaza Simon Stevin y su mercadillo</span>
+        <p>El segundo mercadillo de Navidad de Brujas, más pequeño y tranquilo que el del Markt.</p>
+        <p class="curiosidad">La estatua es de Simon Stevin, un matemático nacido en Brujas en el siglo XVI. Entre otras cosas, popularizó el uso de los decimales.</p>
+        <a class="mapa" data-q="Simon Stevinplein, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Simon%20Stevinplein%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Iglesia de Nuestra Señora (Onze-Lieve-Vrouwekerk)</span>
+        <p>Su torre de ladrillo, de unos 115 metros, es de las más altas del mundo hechas de ladrillo. Dentro está la <b>Virgen con el Niño de Miguel Ángel</b>, en mármol blanco.</p>
+        <p class="curiosidad">Es la única escultura de Miguel Ángel que salió de Italia en vida del artista: la compró un mercader de Brujas a principios del siglo XVI.</p>
+        <p>La iglesia es gratis. La zona de la escultura (con los sepulcros de Carlos el Temerario y María de Borgoña) cuesta 8 € y abre de 9:30 a 17:00.</p>
+        <a class="mapa" data-q="Onze-Lieve-Vrouwekerk, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Onze-Lieve-Vrouwekerk%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Beaterio (Begijnhof)</span>
+        <p>Un recinto de casitas blancas alrededor de un jardín con árboles, fundado en el siglo XIII. Patrimonio de la Humanidad.</p>
+        <p class="curiosidad">Aquí vivían las beguinas: mujeres que llevaban vida religiosa sin ser monjas, solas o viudas, y se mantenían con su trabajo. Hoy viven monjas benedictinas, así que piden silencio.</p>
+        <p>Entrada libre y gratis.</p>
+        <a class="mapa" data-q="Begijnhof, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Begijnhof%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Lago del Amor (Minnewater)</span>
+        <p>Un lago con cisnes, pegado al Beaterio. Desde aquí, la estación queda a unos 10 minutos.</p>
+        <p class="curiosidad">Hay una leyenda romántica sobre una joven llamada Minna, aunque el nombre probablemente viene de una palabra antigua para «agua común». Los cisnes también tienen la suya: se dice que la ciudad está obligada a cuidarlos desde el siglo XV.</p>
+        <a class="mapa" data-q="Minnewater, Brugge" href="https://www.google.com/maps/search/?api=1&amp;query=Minnewater%2C%20Brugge" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Si hay ganas</h3>
+    <ul class="lista">
+      <li>Volver al Markt de noche para ver el mercadillo con luces antes del tren.</li>
+      <li>Tomar algo en el <b>Café Vlissinghe</b>, el bar de 1515 que enseñan en el tour.</li>
+      <li>Paseo en barca por los canales: en invierno solo sale algunos días. Unos 15 €; el billete se compra en el mismo embarcadero.</li>
+    </ul>
+    <p>Tren de vuelta: hay uno cada 30 minutos más o menos, no hace falta fijar hora. Por ejemplo, el de las 18:11 llega hacia las 19:17. Bajad en <b>Brussel-Centraal / Bruxelles-Central</b>.</p>
+    <div class="foto"><b>La foto del día</b>El grupo en el muelle del Rosario, con el canal y el campanario detrás. La postal de Brujas, pero con vosotros dentro.</div>
+  </section>
+
+  <!-- ============ DOMINGO ============ -->
+  <section id="d29" class="vista">
+    <h2>Domingo 29: Atomium y Gante.</h2>
+    <p class="sub">Excursión contratada de día entero.</p>
+    <div class="fijo">Esto es fijo. Hora y sitio de recogida: lo marca la agencia. Apuntadlo la víspera para no tener dudas. Vuelta a Bruselas hacia las 19:00.</div>
+
+    <h3>Para leer en el autobús</h3>
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Atomium</span>
+        <p>Se construyó para la Exposición Universal de 1958. Representa un cristal de hierro ampliado 165.000 millones de veces: nueve bolas de acero unidas por tubos, con 102 metros de altura.</p>
+        <p class="curiosidad">Se pensó para durar solo los seis meses de la Exposición, pero gustó tanto que se quedó, y hoy es el símbolo de la Bélgica moderna.</p>
+        <a class="mapa" data-q="Atomium, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Atomium%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Gante</span>
+        <p>En la Edad Media fue una de las ciudades más grandes y ricas de Europa, gracias al comercio de paños. Es más grande y más viva que Brujas, con mucho ambiente de estudiantes.</p>
+        <p class="curiosidad">Aquí nació en 1500 el emperador Carlos V, rey de España como Carlos I.</p>
+        <p>Si hay rato libre, lo más bonito es:</p>
+        <ul class="lista">
+          <li><b>El castillo de los Condes (Gravensteen)</b>, un castillo medieval de verdad en mitad de la ciudad.</li>
+          <li><b>Los muelles del Graslei y el Korenlei</b>, a los dos lados del río, con casas de gremios. Lo mejor es verlos desde el puente de San Miguel.</li>
+          <li><b>La catedral de San Bavón</b>, con el retablo de <i>La Adoración del Cordero Místico</i> de los hermanos Van Eyck (1432), una de las obras más importantes de la pintura europea. La catedral es gratis y los domingos abre a las 13:00. Ver el retablo cuesta 12,50 € (16 € con la visita de realidad aumentada). Ojo: una parte está en restauración y puede que no se vea entero.</li>
+        </ul>
+        <p>El mercadillo de Navidad de Gante no abre hasta el 3 de diciembre: ese día no habrá casetas.</p>
+        <a class="mapa" data-q="Graslei, Gent" href="https://www.google.com/maps/search/?api=1&amp;query=Graslei%2C%20Gent" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Por la noche</h3>
+    <p>Llegan hacia las 19:00, justo a la hora de cenar. Cena sencilla cerca del hotel (por ejemplo, Chez Jules, a dos pasos del hotel): el día habrá sido largo y mañana se madruga para Lovaina.</p>
+    <div class="foto"><b>La foto del día</b>Todos reflejados en una de las bolas de acero del Atomium. Salís deformados, y esa es la gracia.</div>
+  </section>
+
+  <!-- ============ LUNES ============ -->
+  <section id="d30" class="vista">
+    <h2>Lunes 30: Lovaina y free tour.</h2>
+    <p class="sub">Por la mañana, Lovaina con nuestra propia ruta. Por la tarde, Bruselas con guía.</p>
+
+    <ul class="horario">
+      <li><b>9:00</b><span>Salir del hotel hacia Bruxelles-Central.</span></li>
+      <li><b>9:16</b><span>Tren a Lovaina (orientativo); llega a las 9:41.</span></li>
+      <li><b>9:45</b><span>Ruta por Lovaina hasta las 12:30, con un café por el camino.</span></li>
+      <li><b>~12:30</b><span>Del Gran Beaterio a la estación de Lovaina en autobús, y tren de vuelta.</span></li>
+      <li><b>~13:30</b><span>De vuelta en Bruselas: comer cerca de la Grand Place, en un sitio ágil.</span></li>
+      <li><b>15:15</b><span>Estar en la Grand Place, en el punto de encuentro del free tour.</span></li>
+      <li><b>15:30</b><span>Free tour por Bruselas, unas 2 horas y media.</span></li>
+      <li><b>~18:00</b><span>Termina en las Galerías, al lado del hotel. Descanso.</span></li>
+      <li><b>Noche</b><span>Última vuelta por el mercadillo y cena de despedida (por ejemplo, La Taverne du Passage, en las galerías; ver «Práctico»).</span></li>
+    </ul>
+
+    <div class="aviso">Hay varios trenes por hora; tardan 25 minutos. Con la tarjeta Train+, a partir de las 9:00 ya es «hora valle», con más descuento: unos 4 € ida y vuelta.</div>
+    <div class="aviso">Los lunes cierran casi todos los museos de Bruselas. En Lovaina, lo que merece la pena de esta ruta sí abre (iglesia y biblioteca). El mercadillo de Lovaina todavía no ha empezado.</div>
+
+    <h3>Mañana: ruta por Lovaina</h3>
+    <a class="ruta" data-paradas="Station Leuven|Fonske, Rector De Somerplein, Leuven|Universiteitsbibliotheek, Ladeuzeplein, Leuven|Stadhuis Leuven|Oude Markt, Leuven" href="https://www.google.com/maps/dir/?api=1&amp;origin=Station%20Leuven&amp;destination=Oude%20Markt%2C%20Leuven&amp;travelmode=walking&amp;waypoints=Fonske%2C%20Rector%20De%20Somerplein%2C%20Leuven%7CUniversiteitsbibliotheek%2C%20Ladeuzeplein%2C%20Leuven%7CStadhuis%20Leuven" target="_blank">Ver el tramo 1 en el mapa<small>Estación, Fonske, Biblioteca, Ayuntamiento, Oude Markt</small></a>
+    <a class="ruta" data-paradas="Oude Markt, Leuven|Groot Begijnhof, Leuven" href="https://www.google.com/maps/dir/?api=1&amp;origin=Oude%20Markt%2C%20Leuven&amp;destination=Groot%20Begijnhof%2C%20Leuven&amp;travelmode=walking" target="_blank">Ver el tramo 2 en el mapa<small>Oude Markt, Gran Beaterio (unos 10 o 15 minutos)</small></a>
+    <a class="ruta" data-paradas="Groot Begijnhof, Leuven|Station Leuven" data-modo="transit" href="https://www.google.com/maps/dir/?api=1&amp;origin=Groot%20Begijnhof%2C%20Leuven&amp;destination=Station%20Leuven&amp;travelmode=transit" target="_blank">Volver a la estación<small>Mejor en autobús, para llegar descansados al free tour</small></a>
+    <p class="tramo">La ruta son unos 3 km andando. Para volver del Gran Beaterio, coged el autobús: andando son 25 o 30 minutos más, y por la tarde hay free tour.</p>
+
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Avenida Bondgenotenlaan</span>
+        <p>Al salir de la estación, esta avenida lleva recta al centro, en unos 10 o 15 minutos.</p>
+        <p class="curiosidad">Su nombre significa «avenida de los Aliados». En agosto de 1914, al empezar la Primera Guerra Mundial, el ejército alemán quemó buena parte de Lovaina, y la ciudad se reconstruyó después. Muchos edificios que parecen antiguos son de esa reconstrucción.</p>
+      </li>
+      <li>
+        <span class="nombre">Fonske</span>
+        <p>La estatua de un estudiante que, leyendo un libro, se echa por la cabeza el contenido de un vaso. Es el símbolo de la ciudad.</p>
+        <p class="curiosidad">Su nombre completo es <i>Fons Sapientiae</i>, «fuente de la sabiduría». Se la regalaron a la universidad en 1975, cuando cumplía 550 años. La Universidad de Lovaina se fundó en 1425 y es una de las más antiguas de Europa.</p>
+        <a class="mapa" data-q="Fonske, Rector De Somerplein, Leuven" href="https://www.google.com/maps/search/?api=1&amp;query=Fonske%2C%20Rector%20De%20Somerplein%2C%20Leuven" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Ladeuzeplein y la Biblioteca Universitaria</span>
+        <p>Una plaza grande presidida por la biblioteca, un edificio enorme con una torre de reloj.</p>
+        <p class="curiosidad">La biblioteca antigua ardió en 1914, con cientos de miles de libros y manuscritos. Se reconstruyó aquí con dinero donado desde Estados Unidos, y en 1940 volvió a arder en la Segunda Guerra Mundial. En la plaza, el escarabajo gigante atravesado por una aguja es una escultura de Jan Fabre.</p>
+        <p><b>Para entrar:</b> la sala de lectura y la torre (con audioguía y vistas de toda la ciudad) abren los lunes de 9:00 a 18:30. Unos 10 €.</p>
+        <a class="mapa" data-q="Universiteitsbibliotheek, Ladeuzeplein, Leuven" href="https://www.google.com/maps/search/?api=1&amp;query=Universiteitsbibliotheek%2C%20Ladeuzeplein%2C%20Leuven" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Grote Markt: Ayuntamiento e iglesia de San Pedro</span>
+        <p>Lo más espectacular de Lovaina. El <b>Ayuntamiento</b>, del siglo XV, es una de las joyas del gótico: parece de encaje de piedra, con más de 200 estatuas en la fachada. Enfrente está la <b>iglesia de San Pedro</b>, también gótica.</p>
+        <p class="curiosidad">Las estatuas de la fachada se pusieron en el siglo XIX y representan a personajes de la historia de la ciudad: sabios, artistas, nobles y santos.</p>
+        <p><b>Para entrar:</b> el Ayuntamiento solo se visita con guía algunos sábados, así que hoy se ve por fuera. La <b>iglesia de San Pedro</b> sí: abre de lunes a sábado de 10:00 a 16:30 y es <b>gratis</b>. Dentro están los cuadros de Dieric Bouts, como <i>La Última Cena</i>. Hay una experiencia digital opcional, de pago, para verlos con más detalle.</p>
+        <a class="mapa" data-q="Stadhuis Leuven" href="https://www.google.com/maps/search/?api=1&amp;query=Stadhuis%20Leuven" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Oude Markt</span>
+        <p>A 2 minutos de la Grote Markt. Una plaza cerrada, rodeada entera de bares, donde se reúnen los estudiantes.</p>
+        <p class="curiosidad">La llaman «la barra más larga del mundo», porque los bares están pegados unos a otros todo alrededor. Por la mañana está tranquila: buen sitio para el café.</p>
+        <a class="mapa" data-q="Oude Markt, Leuven" href="https://www.google.com/maps/search/?api=1&amp;query=Oude%20Markt%2C%20Leuven" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Gran Beaterio (Groot Begijnhof)</span>
+        <p>Bajando por la calle Naamsestraat, unos 10 o 15 minutos. Es un barrio entero de casas de ladrillo rojo, calles empedradas, jardines y pequeños canales. Lo más bonito y tranquilo de Lovaina, y casi sin turistas.</p>
+        <p class="curiosidad">Como el Beaterio de Brujas, es Patrimonio de la Humanidad. Pero este era como un pueblo dentro de la ciudad, y hoy lo usa la universidad para alojar a estudiantes y profesores.</p>
+        <p>Siempre abierto y gratis. Es zona de viviendas: piden respetar la tranquilidad.</p>
+        <a class="mapa" data-q="Groot Begijnhof, Leuven" href="https://www.google.com/maps/search/?api=1&amp;query=Groot%20Begijnhof%2C%20Leuven" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Comer</h3>
+    <div class="tarjeta">
+      <span class="nombre">Algo ágil cerca de la Grand Place</span>
+      <p>Hay que estar en el free tour a las 15:15, así que mejor un sitio donde no tarden en servir:</p>
+      <ul class="lista">
+        <li><b>Brasserie Ommegang</b> (Rue de la Montagne 4), a 2 minutos de la Grand Place: carbonade con patatas.</li>
+        <li><b>Galerie Bortier</b> (Rue de la Madeleine 55): varios puestos, cada uno pide lo suyo.</li>
+      </ul>
+      <p>Hoy no abren ni el Wolf ni el Bouillon a mediodía.</p>
+      <a class="mapa" data-q="Brasserie Ommegang, Rue de la Montagne 4, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Brasserie%20Ommegang%2C%20Rue%20de%20la%20Montagne%204%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+    </div>
+
+    <h3>Tarde: free tour por Bruselas</h3>
+    <div class="fijo">Reservado: «El free tour más completo de Bruselas», a las 15:30, en español. Sale de la Grand Place: el punto exacto viene en la confirmación de la reserva. Dura unas 2 horas y media y termina en las Galerías Saint-Hubert. Al final, cada uno da al guía la voluntad (lo habitual, unos 10 €).</div>
+    <div class="aviso">A partir de las 16:45 será de noche: abrigo, gorro, guantes y calzado cómodo, que son 2 horas y media de pie.</div>
+    <a class="ruta" data-paradas="Gare de Bruxelles-Central|Grand Place, Bruxelles" href="https://www.google.com/maps/dir/?api=1&amp;origin=Gare%20de%20Bruxelles-Central&amp;destination=Grand%20Place%2C%20Bruxelles&amp;travelmode=walking" target="_blank">De la estación a la Grand Place<small>Unos 5 minutos andando</small></a>
+
+    <h3>Para el recuerdo</h3>
+    <p class="tramo">El guía lo contará en directo. Esto queda aquí para repasar lo que habéis visto.</p>
+
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Mont des Arts</span>
+        <p>A 5 minutos de la estación. Un jardín en escalera, de los años cincuenta, con la mejor vista del centro: abajo, la ciudad y la torre del Ayuntamiento asomando.</p>
+        <a class="mapa" data-q="Mont des Arts, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Mont%20des%20Arts%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">El Sablon: comer, chocolate e iglesia</span>
+        <p>El barrio elegante de Bruselas: anticuarios, cafés y las chocolaterías más finas (Pierre Marcolini, Wittamer). Buen sitio para comer, con muchas brasseries alrededor de la plaza.</p>
+        <p>En la plaza, la <b>iglesia de Nuestra Señora del Sablon</b>, gótica y con vidrieras altísimas. Justo enfrente, el jardín del <b>Petit Sablon</b>, con 48 estatuillas de bronce que representan los oficios antiguos de la ciudad.</p>
+        <p>La iglesia es gratis y abre todos los días, más o menos de 10:00 a 18:00.</p>
+        <p class="curiosidad">Cuenta la leyenda que en 1348 una mujer de Amberes, Beatriz Soetkens, trajo en barco hasta aquí una imagen de la Virgen tras soñar con ella. En la iglesia hay un barco esculpido que lo recuerda.</p>
+        <a class="mapa" data-q="Place du Grand Sablon, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Place%20du%20Grand%20Sablon%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Manneken Pis</span>
+        <p>De camino hacia la Grand Place. Es pequeño (poco más de medio metro), y mucha gente se lleva un chasco, pero es parada obligatoria.</p>
+        <p class="curiosidad">La figura es de 1619. La que se ve es una copia: la original está guardada en la Casa del Rey, en la Grand Place. Tiene más de mil trajes, y lo visten según las fiestas y celebraciones. El museo de sus trajes y el de la Ciudad cierran los lunes.</p>
+        <a class="mapa" data-q="Manneken Pis, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Manneken%20Pis%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+      <li>
+        <span class="nombre">Mercadillo al anochecer</span>
+        <p>Desde la Grand Place, pasando por la Bolsa, hasta la plaza Sainte-Catherine. Hacia las 16:45 se encienden las luces. Buen momento para las cositas navideñas y un vino caliente.</p>
+        <p>Vuelta al hotel: unos 10 o 15 minutos andando.</p>
+        <a class="mapa" data-q="Place Sainte-Catherine, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Place%20Sainte-Catherine%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+
+    <h3>Compras (mejor el martes por la mañana)</h3>
+    <ul class="lista">
+      <li><b>Chocolate:</b> en el Sablon, lo más fino; en las Galerías Saint-Hubert, más variedad.</li>
+      <li><b>Galletas speculoos:</b> Maison Dandoy, junto a la Grand Place, haciéndolas desde 1829.</li>
+      <li><b>Encaje de Bruselas</b> y recuerdos: tiendas alrededor de la Grand Place.</li>
+      <li><b>Adornos y cositas navideñas:</b> en los puestos del mercadillo.</li>
+    </ul>
+    <div class="aviso">El Wolf (el mercado de comida del viernes) <b>no abre los lunes</b>.</div>
+    <div class="foto"><b>La foto del día</b>Todos imitando a Fonske: libro (o móvil) en una mano y el vaso sobre la cabeza. Mejor con el vaso vacío.</div>
+  </section>
+
+  <!-- ============ MARTES ============ -->
+  <section id="d01" class="vista">
+    <h2>Martes 1: vuelta.</h2>
+    <p class="sub">Mañana tranquila y a casa.</p>
+    <div class="fijo">Vuelo de vuelta por la tarde: mirad la hora exacta en la tarjeta de embarque. El traslado al aeropuerto está incluido: confirmad la hora de recogida con la agencia.</div>
+    <ul class="lista">
+      <li>Desayuno sin prisa y maletas. La habitación hay que dejarla <b>antes de las 12:00</b>; las maletas se quedan en recepción hasta el traslado.</li>
+      <li>Últimas compras en las Galerías, al lado del hotel.</li>
+    </ul>
+    <ol class="paradas">
+      <li>
+        <span class="nombre">Catedral de San Miguel y Santa Gúdula</span>
+        <p>Si hay tiempo: a 5 minutos del hotel. Una catedral gótica de piedra clara, con dos torres, construida entre los siglos XIII y XVI. La nave es gratis y abre por la mañana, más o menos desde las 8:00 o las 9:00 (la cripta y el tesoro, unos pocos euros, en efectivo).</p>
+        <p class="curiosidad">Aquí se celebran las grandes ceremonias de la familia real belga: en 1999 se casaron en ella los actuales reyes, Felipe y Matilde.</p>
+        <a class="mapa" data-q="Cathédrale Saints-Michel-et-Gudule, Bruxelles" href="https://www.google.com/maps/search/?api=1&amp;query=Cath%C3%A9drale%20Saints-Michel-et-Gudule%2C%20Bruxelles" target="_blank">Abrir en el mapa</a>
+      </li>
+    </ol>
+    <div class="foto"><b>La foto del día</b>La maleta abierta, con todo el chocolate a la vista. Que se vea quién ha ganado.</div>
+  </section>
+
+  <!-- ============ AVISO LEGAL ============ -->
+  <section id="legal" class="vista">
+    <h2>Letra pequeña.</h2>
+    <p class="sub">Condiciones de uso de esta guía. Léanse con las gafas de cerca puestas.</p>
+    <ol class="legal">
+      <li>Esta guía se entrega tal cual. El organizador no se hace responsable de mejillones mal elegidos, cervezas de más ni gofres de menos.</li>
+      <li>Queda prohibido decir «esto en España es más barato» más de tres veces al día. A la cuarta, invitáis al grupo a un chocolate.</li>
+      <li>Quien se pierda enseñará la tarjeta del hotel y pondrá cara de turista simpático. Llamar al organizador desde Bélgica para preguntar cómo se vuelve al hotel cuenta como perderse dos veces.</li>
+      <li>El exceso de chocolate en la maleta es responsabilidad exclusiva de quien lo compra. La compañía aérea no acepta como excusa que «es para regalar».</li>
+      <li>Las siestas están permitidas, pero no en mitad del free tour, y menos roncando.</li>
+      <li>El bingo se juega limpio. Marcar una casilla sin haberla hecho se castiga pagando la siguiente ronda. El botón de empezar de nuevo no borra los pecados.</li>
+      <li>Las fotos del día son obligatorias. Salir con los ojos cerrados no exime de repetirla.</li>
+      <li>Cualquier reclamación se presentará por escrito, en neerlandés, en la oficina de quejas de Lovaina, abierta los lunes de 9:16 a 9:17.</li>
+      <li>Al abrir esta página aceptáis pasarlo en grande, reíros mucho y volver contando batallitas. Es la única cláusula de obligado cumplimiento.</li>
+    </ol>
+  </section>
+
+  <!-- ============ PRÁCTICO ============ -->
+  <section id="practico" class="vista">
+    <h2>Práctico</h2>
+    <table>
+      <tr><td>Emergencias</td><td><a class="tel" href="tel:112">112</a> (igual que en España)</td></tr>
+      <tr><td>Farmacia</td><td><i>Pharmacie</i> en Bruselas, <i>Apotheek</i> en Brujas, Gante y Lovaina.</td></tr>
+      <tr><td>Tiempo</td><td>Mucho frío: por la mañana, bajo cero (hasta -4° el viernes y el sábado) y como mucho entre 1° y 7°. El domingo puede llover. Abrigo de invierno, gorro, guantes, paraguas y capas. Anochece hacia las 16:45.</td></tr>
+      <tr><td>Idiomas</td><td>Francés en Bruselas; neerlandés en Brujas, Gante y Lovaina. Casi todo el mundo habla inglés.</td></tr>
+      <tr><td>Propinas</td><td>No son obligatorias: el servicio va incluido. Redondear si os ha gustado. En el free tour, al final, lo que os parezca.</td></tr>
+      <tr><td>Mercadillos</td><td>Bruselas, del 27/11 al 3/1, de 12:00 a 22:00. Brujas, del 20/11 al 3/1. Gante y Lovaina todavía no habrán abierto.</td></tr>
+      <tr><td>Qué probar</td><td>Gofres, patatas fritas (<i>frites</i>) con salsa, mejillones, <i>stoofvlees</i>, chocolate y cerveza belga.</td></tr>
+      <tr><td>Cenar</td><td>Se cena de 19:00 a 21:00; muchas cocinas cierran a las 22:00.</td></tr>
+      <tr><td>Pagar</td><td>Tarjeta casi en todas partes, pero llevad algo de efectivo para las casetas del mercadillo.</td></tr>
+      <tr><td>Calzado</td><td>Cómodo: todo el centro es de adoquines.</td></tr>
+      <tr><td>Descanso</td><td>A media tarde, un rato en el hotel sienta muy bien.</td></tr>
+    </table>
+
+    <h3>Trenes y tarjeta Train+</h3>
+    <p>Todos salen de <b>Bruxelles-Central</b>, a 5 minutos del hotel. Horarios orientativos: confirmadlos en las pantallas o en la app SNCB.</p>
+    <table>
+      <tr><td>Sáb 28, ida</td><td>Bruselas a Brujas: sale a las 9:00 y llega a las 10:00 (uno cada 30 min)</td></tr>
+      <tr><td>Sáb 28, vuelta</td><td>Brujas a Bruselas: por ejemplo, sale a las 18:11 y llega a las 19:17</td></tr>
+      <tr><td>Lun 30, ida</td><td>Bruselas a Lovaina: sale a las 9:16 y llega a las 9:41 (varios por hora)</td></tr>
+      <tr><td>Lun 30, vuelta</td><td>Lovaina a Bruselas: a mediodía, 25 minutos</td></tr>
+    </table>
+    <div class="aviso">
+      <b>Tarjeta Train+ (para pagar menos):</b>
+      <ul class="lista">
+        <li>Se saca en la máquina de la estación con nombre, apellidos y fecha de nacimiento (o en taquilla, con el DNI). Sale en papel con un código QR. Unos 4 € por un mes.</li>
+        <li>Es personal: cada uno la suya. Al comprar cada billete se escanea el QR, y en el tren hay que llevar el DNI.</li>
+        <li>Mayores de 65: siempre tienen un 40 % de descuento. Con Train+ nunca pagan más de 5,50 € por trayecto, y los fines de semana y entre semana de 9:00 a 16:00 el descuento es todavía mayor.</li>
+        <li>Quien no tenga 65: billete normal en la máquina; con Train+ también tiene descuento en esas horas.</li>
+      </ul>
+    </div>
+
+    <h3>Dónde comer cerca del hotel</h3>
+    <ul class="lista">
+      <li><b>Galerie Bortier</b> (Rue de la Madeleine 55): varios puestos, cada uno elige. Económico. Hasta las 22:30 (domingo y lunes, hasta las 19:00).</li>
+      <li><b>De Pistolei</b> (Rue de la Madeleine 5): bocadillos para desayunar o llevar al tren. Muy económico. De 7:00 a 17:00 o 18:00.</li>
+      <li><b>Brasserie Ommegang</b> (Rue de la Montagne 4): carbonade (ternera a la cerveza) con patatas. Precio medio. Todos los días, de 11:00 a 22:30.</li>
+      <li><b>Chez Jules</b> (Rue de l'Écuyer 33): cena sencilla al volver de excursión. Precio medio. Todos los días, de 10:00 a 23:00.</li>
+      <li><b>Bouillon Bruxelles</b> (Rue des Dominicains 7): platos belgas a buen precio; mejor reservar. Mediodía y noche; el lunes, solo noche.</li>
+      <li><b>La Taverne du Passage</b> (Galerie de la Reine 30): cena especial de cocina belga clásica, buena para la despedida. Precio medio-alto. Todos los días, de 12:00 a 23:00.</li>
+    </ul>
+    <div class="aviso">Evitad la <b>Rue des Bouchers</b>: restaurantes con gancho en la puerta y precios de turista.</div>
+
+    <h3>Precios aproximados por persona</h3>
+    <table>
+      <tr class="grupo"><th colspan="2">Bruselas</th></tr>
+      <tr><td>Museo de la Ciudad (Casa del Rey)</td><td>Unos 10 €; cierra los lunes</td></tr>
+      <tr><td>Belgian Beer World (la Bolsa)</td><td>Unos 21,50 €; mayores, unos 19,50 €</td></tr>
+      <tr><td>Catedral de San Miguel y Santa Gúdula</td><td>Gratis (cripta y tesoro, unos pocos euros)</td></tr>
+      <tr><td>Free tour (lunes)</td><td>La voluntad; lo habitual, unos 10 €</td></tr>
+      <tr><td>Iglesia del Sablon</td><td>Gratis</td></tr>
+      <tr><td>Galerías, Grand Place y Mont des Arts</td><td>Gratis</td></tr>
+      <tr><td>Mercadillo de Navidad</td><td>Gratis; noria y pista de hielo, aparte</td></tr>
+      <tr class="grupo"><th colspan="2">Brujas (sábado)</th></tr>
+      <tr><td>Tren ida y vuelta</td><td>Unos 11 €, con Train+ y 65 o más</td></tr>
+      <tr><td>Free tour</td><td>La voluntad; lo habitual, unos 10 €</td></tr>
+      <tr><td>Museo de la Cerveza</td><td>Unos 15 €, con cata</td></tr>
+      <tr><td>Campanario (Belfort)</td><td>Unos 15 €</td></tr>
+      <tr><td>Virgen de Miguel Ángel</td><td>8 € (la iglesia, gratis)</td></tr>
+      <tr><td>Barco por los canales</td><td>Unos 15 €, si sale ese día</td></tr>
+      <tr><td>Beaterio</td><td>Gratis</td></tr>
+      <tr class="grupo"><th colspan="2">Gante (domingo, con la agencia)</th></tr>
+      <tr><td>Catedral de San Bavón</td><td>Gratis</td></tr>
+      <tr><td>Retablo del Cordero Místico</td><td>12,50 € (16 € con realidad aumentada)</td></tr>
+      <tr class="grupo"><th colspan="2">Lovaina (lunes)</th></tr>
+      <tr><td>Tren ida y vuelta</td><td>Unos 4 €, con Train+ y 65 o más</td></tr>
+      <tr><td>Biblioteca y torre</td><td>Unos 10 €</td></tr>
+      <tr><td>Iglesia de San Pedro</td><td>Gratis</td></tr>
+      <tr><td>Gran Beaterio</td><td>Gratis</td></tr>
+      <tr class="grupo"><th colspan="2">En cualquier sitio</th></tr>
+      <tr><td>Tarjeta Train+</td><td>Unos 4 € (un mes), una por persona</td></tr>
+      <tr><td>Patatas fritas</td><td>Entre 5,50 y 7 € el cucurucho con salsa</td></tr>
+      <tr><td>Gofre con bebida</td><td>Unos 6,50 €</td></tr>
+    </table>
+
+    <h3>En la maleta</h3>
+    <p>DNI (también para el tren), paraguas, calzado cómodo y hueco para el chocolate.</p>
+
+    <h3>Frases útiles</h3>
+    <table>
+      <tr><td>Hola / Gracias</td><td><i>Bonjour / Merci</i><br><i>Hallo / Dank u</i></td></tr>
+      <tr><td>La cuenta, por favor</td><td><i>L'addition, s'il vous plaît</i><br><i>De rekening, alstublieft</i></td></tr>
+      <tr><td>¿Dónde está…?</td><td><i>Où est… ?</i><br><i>Waar is… ?</i></td></tr>
+    </table>
+  </section>
+
+</main>
+
+<footer>Fechas y horarios comprobados el 25/11/2026. Pueden cambiar: ante la duda, preguntad en el hotel.<br><a href="#legal">Aviso legal</a></footer>
+
+<script>
+  // Enlaces de mapa: un sitio suelto o una ruta con varias paradas (a pie, salvo que se diga otra cosa).
+  document.querySelectorAll("a[data-q]").forEach(function (a) {
+    a.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(a.dataset.q);
+    a.target = "_blank";
+  });
+  document.querySelectorAll("a[data-paradas]").forEach(function (a) {
+    var p = a.dataset.paradas.split("|");
+    var url = "https://www.google.com/maps/dir/?api=1&origin=" + encodeURIComponent(p[0]) +
+      "&destination=" + encodeURIComponent(p[p.length - 1]) +
+      "&travelmode=" + (a.dataset.modo || "walking");
+    if (p.length > 2) url += "&waypoints=" + encodeURIComponent(p.slice(1, -1).join("|"));
+    a.href = url;
+    a.target = "_blank";
+  });
+
+  // Si hoy es un día del viaje, lo destaca en la pantalla principal.
+  (function () {
+    var d = new Date();
+    var hoy = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    var tarjeta = document.querySelector('.dia[data-dia="' + hoy + '"]');
+    if (tarjeta) {
+      tarjeta.classList.add("hoy");
+      tarjeta.querySelector(".dia-texto").insertAdjacentHTML("afterbegin", '<span class="etiqueta">Hoy</span>');
+    }
+  })();
+
+  // Cada día lleva arriba «Volver a los días» y abajo el botón del día siguiente.
+  (function () {
+    var orden = ["d27", "d28", "d29", "d30", "d01"];
+    document.querySelectorAll("section.vista:not(#inicio)").forEach(function (s) {
+      s.insertAdjacentHTML("afterbegin", '<a class="volver" href="#inicio">Volver a los días</a>');
+      var i = orden.indexOf(s.id);
+      if (i > -1 && i < orden.length - 1) {
+        var sig = document.getElementById(orden[i + 1]).querySelector("h2").textContent;
+        s.insertAdjacentHTML("beforeend", '<a class="siguiente" href="#' + orden[i + 1] + '"><small>Día siguiente</small>' + sig + '</a>');
+      }
+    });
+  })();
+
+  // Bingo: cada casilla se marca o desmarca al tocarla y se guarda en el móvil.
+  (function () {
+    var botones = document.querySelectorAll(".bingo button");
+    var guardado = [];
+    try { guardado = JSON.parse(localStorage.getItem("bingo-belgica") || "[]"); } catch (e) {}
+    function contar() {
+      var hechas = document.querySelectorAll('.bingo button[aria-pressed="true"]').length;
+      document.getElementById("bingo-hechas").textContent = hechas;
+      document.getElementById("bingo-total").textContent = botones.length;
+      document.getElementById("bingo-premio").classList.toggle("visible", hechas === botones.length);
+    }
+    botones.forEach(function (b, i) {
+      if (guardado.indexOf(i) > -1) b.setAttribute("aria-pressed", "true");
+      b.addEventListener("click", function () {
+        b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true");
+        var marcadas = [];
+        botones.forEach(function (x, j) { if (x.getAttribute("aria-pressed") === "true") marcadas.push(j); });
+        try { localStorage.setItem("bingo-belgica", JSON.stringify(marcadas)); } catch (e) {}
+        contar();
+      });
+    });
+    // Empezar de nuevo: pregunta antes, por si se toca sin querer.
+    document.getElementById("bingo-reiniciar").addEventListener("click", function () {
+      if (!confirm("¿Borrar todas las casillas y empezar el cartón de nuevo?")) return;
+      botones.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+      try { localStorage.removeItem("bingo-belgica"); } catch (e) {}
+      contar();
+    });
+    contar();
+  })();
+
+  // Enseña solo la pantalla que toca. El botón «atrás» del móvil también funciona.
+  function mostrar() {
+    var id = location.hash.slice(1);
+    if (!document.getElementById(id) || !document.getElementById(id).classList.contains("vista")) id = "inicio";
+    document.querySelectorAll("section.vista").forEach(function (s) {
+      s.classList.toggle("activa", s.id === id);
+    });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+  window.addEventListener("hashchange", mostrar);
+  mostrar();
+</script>
+</body>
+</html>
